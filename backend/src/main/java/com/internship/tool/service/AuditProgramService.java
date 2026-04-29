@@ -9,18 +9,23 @@ import com.internship.tool.exception.UnauthorizedAccessException;
 import com.internship.tool.exception.ValidationException;
 import com.internship.tool.repository.AuditProgramRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuditProgramService {
 
     private final AuditProgramRepository auditProgramRepository;
     private final UserService userService;
+    private final EmailService emailService;
 
     @Transactional(readOnly = true)
     @org.springframework.cache.annotation.Cacheable(value = "programs", key = "#id")
@@ -59,7 +64,31 @@ public class AuditProgramService {
             program.setStatus(AuditStatus.PLANNED);
         }
         
-        return auditProgramRepository.save(program);
+        AuditProgram saved = auditProgramRepository.save(program);
+
+        // Send creation email notification to lead auditor
+        try {
+            Map<String, Object> vars = new HashMap<>();
+            vars.put("recipientName", leadAuditor.getFullName());
+            vars.put("programTitle", saved.getTitle());
+            vars.put("department", saved.getDepartmentUnderAudit() != null ? saved.getDepartmentUnderAudit() : "N/A");
+            vars.put("leadAuditor", leadAuditor.getFullName());
+            vars.put("startDate", saved.getPlannedStartDate().toString());
+            vars.put("endDate", saved.getPlannedEndDate().toString());
+            vars.put("status", saved.getStatus().name());
+            vars.put("description", saved.getDescription());
+
+            emailService.sendTemplateEmail(
+                    leadAuditor.getEmail(),
+                    "📋 New Audit Program Assigned: " + saved.getTitle(),
+                    "audit-program-created",
+                    vars
+            );
+        } catch (Exception e) {
+            log.warn("Email notification failed for program creation id={}: {}", saved.getId(), e.getMessage());
+        }
+
+        return saved;
     }
 
     @Transactional

@@ -35,4 +35,7 @@ public interface AuditTaskRepository extends JpaRepository<AuditTask, Long> {
               AND t.status NOT IN ('COMPLETED', 'CANCELLED')
             """)
     List<AuditTask> findOverdueTasks(@Param("today") LocalDate today);
+
+    /** Used by OverdueTaskScheduler — derived-query equivalent. */
+    List<AuditTask> findByDueDateBeforeAndStatusNot(LocalDate date, AuditStatus status);
 }

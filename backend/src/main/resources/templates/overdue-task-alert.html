@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overdue Audit Task Alert</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+        }
+        .wrapper {
+            max-width: 620px;
+            margin: 40px auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+        }
+        .header {
+            background: linear-gradient(135deg, #7f1d1d 0%, #dc2626 100%);
+            padding: 36px 40px;
+            text-align: center;
+        }
+        .header h1 {
+            color: #ffffff;
+            font-size: 22px;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+        .header p {
+            color: #fecaca;
+            font-size: 13px;
+            margin: 6px 0 0;
+        }
+        .badge {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 5px 16px;
+            background-color: #fbbf24;
+            color: #78350f;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+        .body {
+            padding: 36px 40px;
+        }
+        .greeting {
+            font-size: 16px;
+            color: #1e293b;
+            margin-bottom: 18px;
+        }
+        .alert-box {
+            background: #fef2f2;
+            border: 1px solid #fca5a5;
+            border-left: 4px solid #dc2626;
+            border-radius: 6px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+        }
+        .alert-box p {
+            margin: 0;
+            color: #991b1b;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .info-card {
+            background: #f8fafc;
+            border-left: 4px solid #dc2626;
+            border-radius: 6px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-card table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .info-card td {
+            padding: 7px 0;
+            font-size: 14px;
+            color: #374151;
+        }
+        .info-card td:first-child {
+            font-weight: 600;
+            color: #64748b;
+            width: 40%;
+        }
+        .overdue-days {
+            display: inline-block;
+            padding: 4px 12px;
+            background-color: #dc2626;
+            color: #fff;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 13px;
+        }
+        .cta-btn {
+            display: inline-block;
+            margin: 24px 0 8px;
+            padding: 13px 32px;
+            background: linear-gradient(135deg, #7f1d1d, #dc2626);
+            color: #ffffff !important;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+        }
+        .footer {
+            background-color: #f1f5f9;
+            text-align: center;
+            padding: 20px 40px;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+        .footer a { color: #dc2626; text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <div class="header">
+        <h1>⚠️ External Audit Coordinator</h1>
+        <p>Automated Alert System</p>
+        <span class="badge">⏰ Overdue Task Alert</span>
+    </div>
+    <div class="body">
+        <p class="greeting">Hello <strong th:text="${recipientName}">Auditor</strong>,</p>
+
+        <div class="alert-box">
+            <p>⚠️ The following audit task is OVERDUE and requires your immediate attention.</p>
+        </div>
+
+        <div class="info-card">
+            <table>
+                <tr>
+                    <td>Task Title</td>
+                    <td th:text="${taskTitle}">Vendor Invoice Review</td>
+                </tr>
+                <tr>
+                    <td>Audit Program</td>
+                    <td th:text="${programTitle}">Q2 Financial Audit</td>
+                </tr>
+                <tr>
+                    <td>Assigned To</td>
+                    <td th:text="${assigneeName}">John Doe</td>
+                </tr>
+                <tr>
+                    <td>Due Date</td>
+                    <td><span style="color:#dc2626;font-weight:700;" th:text="${dueDate}">2026-04-20</span></td>
+                </tr>
+                <tr>
+                    <td>Days Overdue</td>
+                    <td><span class="overdue-days" th:text="${daysOverdue + ' days'}">5 days</span></td>
+                </tr>
+                <tr>
+                    <td>Priority</td>
+                    <td th:text="${priority}">HIGH</td>
+                </tr>
+                <tr>
+                    <td>Current Status</td>
+                    <td th:text="${status}">IN_PROGRESS</td>
+                </tr>
+            </table>
+        </div>
+
+        <p style="color:#475569;font-size:14px;">
+            Please log in to the dashboard to update this task's status or reach out to the assigned auditor to resolve the delay as soon as possible.
+        </p>
+
+        <div style="text-align:center;">
+            <a class="cta-btn" th:href="${appUrl}" href="#">Resolve in Dashboard →</a>
+        </div>
+    </div>
+    <div class="footer">
+        <p>This is an automated alert from the <strong>External Audit Coordinator</strong> system.<br>
+            Sent because this task is past its due date.
+        </p>
+        <p><a th:href="${appUrl}">Open Dashboard</a></p>
+    </div>
+</div>
+</body>
+</html>

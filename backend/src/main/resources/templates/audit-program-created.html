@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit Program Created</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+        }
+        .wrapper {
+            max-width: 620px;
+            margin: 40px auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+        }
+        .header {
+            background: linear-gradient(135deg, #1a3c5e 0%, #2563eb 100%);
+            padding: 36px 40px;
+            text-align: center;
+        }
+        .header h1 {
+            color: #ffffff;
+            font-size: 22px;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+        .header p {
+            color: #bfdbfe;
+            font-size: 13px;
+            margin: 6px 0 0;
+        }
+        .badge {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 5px 16px;
+            background-color: #22c55e;
+            color: #fff;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+        .body {
+            padding: 36px 40px;
+        }
+        .greeting {
+            font-size: 16px;
+            color: #1e293b;
+            margin-bottom: 18px;
+        }
+        .info-card {
+            background: #f8fafc;
+            border-left: 4px solid #2563eb;
+            border-radius: 6px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-card table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .info-card td {
+            padding: 7px 0;
+            font-size: 14px;
+            color: #374151;
+        }
+        .info-card td:first-child {
+            font-weight: 600;
+            color: #64748b;
+            width: 40%;
+        }
+        .cta-btn {
+            display: inline-block;
+            margin: 24px 0 8px;
+            padding: 13px 32px;
+            background: linear-gradient(135deg, #1a3c5e, #2563eb);
+            color: #ffffff !important;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+        }
+        .footer {
+            background-color: #f1f5f9;
+            text-align: center;
+            padding: 20px 40px;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+        .footer a { color: #2563eb; text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <div class="header">
+        <h1>🗂 External Audit Coordinator</h1>
+        <p>Automated Notification System</p>
+        <span class="badge">New Audit Program</span>
+    </div>
+    <div class="body">
+        <p class="greeting">Hello <strong th:text="${recipientName}">Auditor</strong>,</p>
+        <p style="color:#475569;font-size:15px;">
+            A new audit program has been created and assigned to you. Please review the details below and begin preparing your audit plan.
+        </p>
+        <div class="info-card">
+            <table>
+                <tr>
+                    <td>Program Title</td>
+                    <td th:text="${programTitle}">Q2 Financial Audit</td>
+                </tr>
+                <tr>
+                    <td>Department</td>
+                    <td th:text="${department}">Finance</td>
+                </tr>
+                <tr>
+                    <td>Lead Auditor</td>
+                    <td th:text="${leadAuditor}">John Smith</td>
+                </tr>
+                <tr>
+                    <td>Planned Start</td>
+                    <td th:text="${startDate}">2026-05-01</td>
+                </tr>
+                <tr>
+                    <td>Planned End</td>
+                    <td th:text="${endDate}">2026-06-30</td>
+                </tr>
+                <tr>
+                    <td>Status</td>
+                    <td><span style="color:#16a34a;font-weight:700;" th:text="${status}">PLANNED</span></td>
+                </tr>
+            </table>
+        </div>
+        <p style="color:#475569;font-size:14px;" th:if="${description}" >
+            <strong>Description:</strong> <span th:text="${description}"></span>
+        </p>
+        <div style="text-align:center;">
+            <a class="cta-btn" th:href="${appUrl}" href="#">View in Dashboard →</a>
+        </div>
+    </div>
+    <div class="footer">
+        <p>This is an automated message from the <strong>External Audit Coordinator</strong> system.<br>
+            Please do not reply directly to this email.
+        </p>
+        <p><a th:href="${appUrl}">Open Dashboard</a></p>
+    </div>
+</div>
+</body>
+</html>

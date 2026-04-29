@@ -58,3 +58,7 @@ springdoc:
 ai:
   service:
     base-url: ${AI_SERVICE_URL:http://localhost:5000}
+
+# Application base URL (used in email templates)
+app:
+  base-url: ${APP_BASE_URL:http://localhost:3000}
