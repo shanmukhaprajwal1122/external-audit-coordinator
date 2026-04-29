@@ -37,6 +37,15 @@ def chat():
 
     try:
         response_text = get_groq_response(prompt, context)
+
+        # groq_service returns a JSON string with is_fallback=True on failure
+        try:
+            parsed = json.loads(response_text)
+            if isinstance(parsed, dict) and parsed.get("is_fallback"):
+                return jsonify(parsed), 503  # Service Unavailable — AI is down
+        except (json.JSONDecodeError, TypeError):
+            pass  # Normal string response — not JSON, continue normally
+
         set_cached(cache_key, response_text, ttl=CACHE_TTL)
         return jsonify({"response": response_text, "cached": False}), 200
     except Exception as e:

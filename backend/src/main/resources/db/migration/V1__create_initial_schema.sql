@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS users (
 
     CONSTRAINT pk_users         PRIMARY KEY (id),
     CONSTRAINT uq_users_email   UNIQUE (email),
-    CONSTRAINT chk_users_role   CHECK (role IN ('ADMIN','MANAGER','VIEWER'))
+    CONSTRAINT chk_users_role   CHECK (role IN ('ADMIN','MANAGER','AUDITOR','VIEWER'))
 );
 
 -- ─── 2. AUDIT_PROGRAMS ───────────────────────────────────────
