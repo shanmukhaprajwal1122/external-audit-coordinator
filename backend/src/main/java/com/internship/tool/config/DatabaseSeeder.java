@@ -1,6 +1,12 @@
 package com.internship.tool.config;
 
-import com.internship.tool.entity.*;
+import com.internship.tool.entity.AuditProgram;
+import com.internship.tool.entity.AuditStatus;
+import com.internship.tool.entity.AuditTask;
+import com.internship.tool.entity.Finding;
+import com.internship.tool.entity.FindingSeverity;
+import com.internship.tool.entity.Role;
+import com.internship.tool.entity.User;
 import com.internship.tool.repository.AuditProgramRepository;
 import com.internship.tool.repository.AuditTaskRepository;
 import com.internship.tool.repository.FindingRepository;
