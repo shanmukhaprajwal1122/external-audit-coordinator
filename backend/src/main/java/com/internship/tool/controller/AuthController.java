@@ -3,6 +3,10 @@ package com.internship.tool.controller;
 import com.internship.tool.entity.User;
 import com.internship.tool.repository.UserRepository;
 import com.internship.tool.security.JwtUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Authentication", description = "Endpoints for user login and JWT generation")
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -26,17 +31,25 @@ public class AuthController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Schema(description = "Login Request DTO")
     @Data
     public static class AuthRequest {
+        @Schema(description = "User email", example = "admin@example.com")
         private String email;
+        @Schema(description = "User password", example = "Admin@123")
         private String password;
     }
 
+    @Schema(description = "Login Response DTO containing JWT")
     @Data
     public static class AuthResponse {
+        @Schema(description = "JWT Token", example = "eyJhbGciOiJIUzI1NiJ9...")
         private String token;
+        @Schema(description = "Token Type", example = "Bearer")
         private String type = "Bearer";
+        @Schema(description = "User email", example = "admin@example.com")
         private String email;
+        @Schema(description = "User Role", example = "ADMIN")
         private String role;
         
         public AuthResponse(String token, String email, String role) {
@@ -46,6 +59,9 @@ public class AuthController {
         }
     }
 
+    @Operation(summary = "Login and generate JWT", description = "Authenticates a user and returns a JWT token.")
+    @ApiResponse(responseCode = "200", description = "Successfully authenticated")
+    @ApiResponse(responseCode = "401", description = "Invalid credentials")
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) {
         try {
