@@ -3,15 +3,23 @@
 #  Multi-stage: build static files, serve via Nginx
 # ══════════════════════════════════════════════
 
+# Build arguments for environment variables
+ARG VITE_API_BASE_URL=/api
+ARG VITE_AI_BASE_URL=/ai
+
 # ── Stage 1: Build ─────────────────────────────
 FROM node:18-alpine AS builder
 WORKDIR /app
+
+# Create .env file with build vars (Vite needs these at build time)
+RUN echo "VITE_API_BASE_URL=$VITE_API_BASE_URL" > .env && \
+    echo "VITE_AI_BASE_URL=$VITE_AI_BASE_URL" >> .env
 
 # Cache dependencies
 COPY package.json package-lock.json* ./
 RUN npm install
 
-# Build static files
+# Copy source and build
 COPY . .
 RUN npm run build
 

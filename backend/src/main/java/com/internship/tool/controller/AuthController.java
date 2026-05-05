@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -86,7 +87,24 @@ public class AuthController {
         
         User user = userRepository.findByEmail(authRequest.getEmail()).orElseThrow();
 
-        return ResponseEntity.ok(new AuthResponse(jwt, user.getEmail(), user.getRole().name()));
+return ResponseEntity.ok(new AuthResponse(jwt, user.getEmail(), user.getRole().name()));
+    }
+
+    @Operation(summary = "Get current user", description = "Returns the authenticated user's information.")
+    @ApiResponse(responseCode = "200", description = "User info retrieved")
+    @ApiResponse(responseCode = "401", description = "Not authenticated")
+    @GetMapping("/me")
+    public ResponseEntity<?> getCurrentUser(Authentication auth) {
+        if (auth == null || !auth.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not authenticated");
+        }
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        User user = userRepository.findByEmail(userDetails.getUsername()).orElseThrow();
+        return ResponseEntity.ok(java.util.Map.of(
+            "email", user.getEmail(),
+            "role", user.getRole().name(),
+            "name", user.getFullName()
+        ));
     }
 }
 

@@ -9,6 +9,7 @@ package com.internship.tool.entity;
  */
 public enum Role {
     ADMIN,
+    AUDITOR,
     MANAGER,
     VIEWER
 }

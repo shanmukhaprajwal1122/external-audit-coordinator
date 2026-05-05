@@ -1,15 +1,24 @@
 import os
 import redis
 import json
+from dotenv import load_dotenv
 
-# Fallback to local dict if Redis is unavailable during dev
+load_dotenv()
+
 _local_cache = {}
 
 redis_host = os.getenv("REDIS_HOST", "localhost")
 redis_port = int(os.getenv("REDIS_PORT", 6379))
+redis_password = os.getenv("REDIS_PASSWORD")
 
 try:
-    _redis_client = redis.Redis(host=redis_host, port=redis_port, decode_responses=True, socket_timeout=2)
+    _redis_client = redis.Redis(
+        host=redis_host,
+        port=redis_port,
+        password=redis_password,
+        decode_responses=True,
+        socket_timeout=2
+    )
     _redis_client.ping()
     _use_redis = True
 except Exception:
