@@ -3,13 +3,17 @@
 #  Multi-stage: build static files, serve via Nginx
 # ══════════════════════════════════════════════
 
-# Build arguments for environment variables
+# Global build arguments (must be declared BEFORE first FROM)
 ARG VITE_API_BASE_URL=/api
 ARG VITE_AI_BASE_URL=/ai
 
 # ── Stage 1: Build ─────────────────────────────
 FROM node:18-alpine AS builder
 WORKDIR /app
+
+# Re-declare ARGs inside the stage so they are accessible here
+ARG VITE_API_BASE_URL
+ARG VITE_AI_BASE_URL
 
 # Create .env file with build vars (Vite needs these at build time)
 RUN echo "VITE_API_BASE_URL=$VITE_API_BASE_URL" > .env && \
